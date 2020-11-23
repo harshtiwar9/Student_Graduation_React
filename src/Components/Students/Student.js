@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {useDispatch} from 'react-redux';
 import './Students.css'
 
-function Student({student, studentSubjects}){
+function Student({student, studentSubjects, updateComponentValue}){
 
     const dispatch = useDispatch();
     let [att_HTML,setAtt_HTML] = useState(0);
@@ -10,6 +10,24 @@ function Student({student, studentSubjects}){
     let [att_JAVASCRIPT,setAtt_JAVASCRIPT] = useState(0);
     let [att_GIT,setAtt_GIT] = useState(0);
     let [att_total,setAtt_Total] = useState(0);
+
+    const checkClass = (subject) =>{
+        
+        if(subject === "HTML"){
+            if(att_HTML === 5){
+                return "btn-floating btn-small waves-effect waves-light red disabled";
+            }else if (att_HTML === 0){
+                return "btn-floating btn-small waves-effect waves-light red"
+            }
+            setAtt_HTML(att_HTML+1)
+        }else if(subject === "CSS"){
+            setAtt_CSS(att_CSS+1)
+        }else if(subject === "JAVASCRIPT"){
+            setAtt_JAVASCRIPT(att_JAVASCRIPT+1)
+        }else if(subject === "GIT"){
+            setAtt_GIT(att_GIT+1)
+        }
+    }
 
     const addAttendance = (name, subject) =>{
         // console.log("Name :"+name +" Subject :"+subject)
@@ -25,11 +43,13 @@ function Student({student, studentSubjects}){
 
         setAtt_Total(att_total+1)
 
-        if(att_total+1 === 5){
+        if((att_total+1) === 5){
             let data = {
                 name : name
             }
+            
             dispatch({'type' : 'addAttendance' , data : data})
+            updateComponentValue("addAttendance")
             
         }
     }
@@ -48,11 +68,13 @@ function Student({student, studentSubjects}){
         
         setAtt_Total(att_total-1)
 
-        if(att_total+1 < 5){
+        if((att_total-1) < 5){
             let data = {
                 name : name
             }
+            
             dispatch({'type' : 'subAttendance' , data : data})
+            updateComponentValue("subAttendance")
         }
         
     }
@@ -90,6 +112,8 @@ function Student({student, studentSubjects}){
                                                     </div>
                                                     <div className="col s3">
                                                         <a onClick={() => subAttendance(student, elm)} className="btn-floating btn-small waves-effect waves-light red"><i className="material-icons">remove</i></a>
+                                                        {/* <a onClick={() => subAttendance(student, elm)} className={checkClass(elm)}><i className="material-icons">remove</i></a> */}
+                                                        
                                                     </div>
                                                 </div>
                                     )})
