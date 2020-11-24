@@ -1,13 +1,13 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import { useSelector} from 'react-redux';
 import './Graduation.css'
 
 function Graduation(){
 
-    let graduateStudents = useSelector(state => state.graduation);
+    let graduateStudents = useSelector(state => state);
 
     return(
-        graduateStudents.map((elm,i) => {
+        graduateStudents.graduation.map((elm,i) => {
             
         return (
                 <div className="row" key={i}>
